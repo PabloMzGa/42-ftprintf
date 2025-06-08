@@ -1,0 +1,9 @@
+
+#include "ft_printf.h"
+int main ()
+{
+	int n;
+	n = ft_printf("%c", '\0');
+	n = printf("%c", '\0');
+	return (n);
+}

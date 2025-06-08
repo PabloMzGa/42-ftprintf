@@ -1,0 +1,142 @@
+{
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "build main src",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}/main.c",
+				"${workspaceFolder}/src/*.c",
+				"${workspaceFolder}/src/**/*.c",
+				"${workspaceFolder}/lib/libft/src/*.c",
+				"-I${workspaceFolder}/include",
+				"-I${workspaceFolder}/lib/libft/include",
+				"-I${workspaceFolder}/lib/libft/include/ft_get_next_line",
+				"-lm",
+				"-o",
+				"${workspaceFolder}/main.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Build main source files."
+		},
+		{
+			"type": "cppbuild",
+			"label": "build main with bonus",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}/main.c",
+				"${workspaceFolder}/bonus/src_bonus/*.c",
+				"${workspaceFolder}/bonus/src_bonus/**/*.c",
+				"${workspaceFolder}/lib/libft/src/*.c",
+				"-I${workspaceFolder}/bonus/include_bonus",
+				"-I${workspaceFolder}/lib/libft/include",
+				"-I${workspaceFolder}/lib/libft/include/ft_get_next_line",
+				"-lm",
+				"-o",
+				"${workspaceFolder}/main.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"detail": "Build main.c with bonus source files."
+		},
+		{
+			"type": "shell",
+			"label": "run main with bonus",
+			"command": "${workspaceFolder}/main.out",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"dependsOn": "build main with bonus",
+			"detail": "Run the main executable built with bonus."
+		},
+		{
+			"type": "shell",
+			"label": "run main src",
+			"command": "${workspaceFolder}/main.out",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"dependsOn": "build main src",
+			"detail": "Run the main executable."
+		},
+		{
+			"type": "cppbuild",
+			"label": "build bonus src",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}/bonus/src_bonus/*.c",
+				"${workspaceFolder}/bonus/src_bonus/**/*.c",
+				"${workspaceFolder}/lib/libft/src/*.c",
+				"${workspaceFolder}/lib/libft/src/**/*.c",
+				"${workspaceFolder}/lib/libft/src/**/**/*.c",
+				"-I${workspaceFolder}/bonus/include_bonus",
+				"-I${workspaceFolder}/lib/libft/include",
+				"-I${workspaceFolder}/lib/libft/include/ft_get_next_line",
+				"-I${workspaceFolder}/lib/libft/include/ft_printf",
+				"-lm",
+				"-o",
+				"${workspaceFolder}/bonus/checker.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"detail": "Build bonus source files."
+		},
+		{
+			"type": "shell",
+			"label": "run bonus src",
+			"command": "${workspaceFolder}/bonus/checker.out",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"dependsOn": "build bonus src",
+			"detail": "Run the bonus executable."
+		}
+	],
+	"version": "2.0.0"
+}

@@ -1,0 +1,132 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pablo <pablo@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/09/20 14:34:30 by pabmart2          #+#    #+#              #
+#    Updated: 2025/06/08 18:12:00 by pablo            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+DEBUG_FLAGS = -g -fno-inline
+LDFLAGS = -lm
+BUILD_DIR = build
+
+OBJ_DIR = build/obj
+
+NAME = libftprintf.a
+AR = ar
+ARFLAGS = rcs
+
+HEADERS = \
+	include/ft_printf.h \
+
+SRC = \
+	src/check_printer.c \
+	src/ft_printf.c \
+	src/printers/c_printer.c \
+	src/printers/di_printer.c \
+	src/printers/p_printer.c \
+	src/printers/prct_printer.c \
+	src/printers/s_printer.c \
+	src/printers/u_printer.c \
+	src/printers/x_low_printer.c \
+	src/printers/x_up_printer.c \
+
+OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+
+LIBS = \
+	lib/libft/include/libft.a
+
+PRINTF_INCLUDES = \
+	-Iinclude \
+	-Ilib/libft/include
+
+all: $(NAME)
+
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: clean $(NAME)
+
+clean:
+	@rm -rf $(OBJ_DIR) $(BONUS_OBJ_DIR)
+	@echo "\033[31mObject files removed\033[0m"
+
+fclean: clean
+	@rm -f $(BUILD_DIR)/$(NAME)
+	@rm -f $(BONUS_BUILD_DIR)/$(BONUS_NAME)
+	@$(MAKE) -C lib/libft fclean
+	@echo "\033[31m$(NAME) removed\033[0m"
+
+re: fclean
+	$(MAKE) all
+
+libft:
+	@echo "\033[33mCompiling libft...\033[0m"
+	@$(MAKE) -C lib/libft
+
+
+$(NAME): libft $(OBJ)
+	@mkdir -p $(BUILD_DIR)
+	@$(AR) $(ARFLAGS) $(BUILD_DIR)/$(NAME) $(OBJ)
+	@echo "\033[32m\n¡$(NAME) compiled! \
+	ᕦ(\033[36m⌐■\033[32m_\033[36m■\033[32m)ᕤ\n"
+
+$(OBJ) : $(OBJ_DIR)/%.o : %.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(PRINTF_INCLUDES) -c $< -o $@
+	@echo "\033[34mCompiling: \033[0m$<"
+
+
+#################### BONUS #####################
+
+BONUS_BUILD_DIR = build_bonus
+BONUS_OBJ_DIR = build_bonus/obj
+BONUS_NAME = libftprintf_bonus.a
+
+BONUS_HEADERS = \
+	bonus/include_bonus/ft_printf_bonus.h \
+
+BONUS_SRC = \
+	bonus/src_bonus/check_printer_bonus.c \
+	bonus/src_bonus/ft_printf_bonus.c \
+	bonus/src_bonus/parser_bonus.c \
+	bonus/src_bonus/formaters/padding_formatter_bonus.c \
+	bonus/src_bonus/formaters/precission_formater_bonus.c \
+	bonus/src_bonus/formaters/space_padding_bonus.c \
+	bonus/src_bonus/formaters/zero_padding_bonus.c \
+	bonus/src_bonus/printers/c_printer_bonus.c \
+	bonus/src_bonus/printers/di_printer_bonus.c \
+	bonus/src_bonus/printers/p_printer_bonus.c \
+	bonus/src_bonus/printers/prct_printer_bonus.c \
+	bonus/src_bonus/printers/s_printer_bonus.c \
+	bonus/src_bonus/printers/u_printer_bonus.c \
+	bonus/src_bonus/printers/x_low_printer_bonus.c \
+	bonus/src_bonus/printers/x_up_printer_bonus.c \
+
+BONUS_OBJ = $(addprefix $(BONUS_OBJ_DIR)/, $(BONUS_SRC:.c=.o))
+
+BONUS_INCLUDES = \
+	-Ibonus/include_bonus \
+	-Ilib/libft/include
+
+bonus: libft $(BONUS_OBJ)
+	@mkdir -p $(BONUS_BUILD_DIR)
+	@$(AR) $(ARFLAGS) $(BONUS_BUILD_DIR)/$(BONUS_NAME) $(BONUS_OBJ)
+	@echo "\033[32m\n¡$(BONUS_NAME) compiled! \
+	ᕦ(\033[36m⌐■\033[32m_\033[36m■\033[32m)ᕤ\n"
+
+debug_bonus: CFLAGS += $(DEBUG_FLAGS)
+debug_bonus: clean bonus
+
+$(BONUS_OBJ): $(BONUS_OBJ_DIR)/%.o : %.c $(BONUS_HEADERS)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(BONUS_INCLUDES) -c $< -o $@
+	@echo "\033[34mCompiling: \033[0m$<"
+
+
+################################################
+.PHONY: all debug clean fclean re bonus debug_bonus

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_uitoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 11:40:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/13 20:22:05 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/08 23:40:44 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
 /**
  * @brief Counts the number of digits in an integer.
@@ -21,7 +21,7 @@
  * @param n The integer whose digits are to be counted.
  * @return The number of digits in the integer.
  */
-static int	count_digits(int n)
+static int	count_digits(unsigned int n)
 {
 	int	counter;
 
@@ -50,25 +50,12 @@ static int	count_digits(int n)
  * @param len The length of the buffer.
  * @return A pointer to the resulting string.
  */
-static char	*set_numbers(char *str, int n, size_t len)
+static char	*set_numbers(char *str, unsigned int n, size_t len)
 {
-	unsigned int	unsigned_n;
-
 	if (n == 0)
 	{
 		*str = '0';
 		str[1] = '\0';
-		return (str);
-	}
-	if (n < 0)
-	{
-		unsigned_n = (unsigned int)n * -1;
-		while (len > 1)
-		{
-			str[--len] = unsigned_n % 10 + '0';
-			unsigned_n /= 10;
-		}
-		str[0] = '-';
 		return (str);
 	}
 	while (len > 0)
@@ -79,14 +66,12 @@ static char	*set_numbers(char *str, int n, size_t len)
 	return (str);
 }
 
-char	*ft_itoa(int n)
+char	*ft_uitoa(unsigned int n)
 {
 	size_t	len;
 	char	*str;
 
 	len = count_digits(n);
-	if (n < 0)
-		len++;
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);

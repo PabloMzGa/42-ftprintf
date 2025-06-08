@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 20:31:42 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/08 21:27:37 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/08 23:16:27 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,5 @@ char	*set_alternate_format(char *print, char *flags, t_printer printer)
 		ft_free((void **)&print);
 		return (joined);
 	}
+	return (NULL);
 }

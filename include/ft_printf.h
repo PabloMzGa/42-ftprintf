@@ -6,17 +6,18 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:26:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/08 11:57:59 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/08 23:54:06 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+# include <limits.h>
 # include <stdarg.h>
-# include <stddef.h>
-# include "libft.h"
-
+# include <stdint.h>
+# include <stdlib.h>
+# include <unistd.h>
 /**
  * @typedef t_printer
  * @brief A function pointer type for functions that take a va_list argument
@@ -208,6 +209,23 @@ void			ft_bzero(void *s, size_t n);
 void			*ft_calloc(size_t nmemb, size_t size);
 
 /**
+ * @brief Frees the memory pointed to by the given pointer and sets it to NULL.
+ *
+ * This function takes a double pointer to a memory location, frees the memory
+ * it points to, and then sets the pointer to NULL to avoid dangling pointers,
+ *
+ * If the pointer is NULL, it does nothing.
+ *
+ * @param ptr A double pointer to the memory to be freed. The pointer itself
+ *            must not be NULL, but the memory it points to can be NULL.
+ *
+ * @note It is the caller's responsibility to ensure that the pointer passed
+ *       to this function was allocated dynamically (e.g., using malloc, calloc,
+ *       or realloc).
+ */
+void			ft_free(void **ptr);
+
+/**
  * @brief Converts an integer to a null-terminated string.
  *
  * This function takes an integer as input and converts it to a string
@@ -231,7 +249,7 @@ char			*ft_itoa(int n);
  * @param n Number of bytes to be set to the value.
  * @return Pointer to the memory area s.
  */
-void			*ft_memset(void *s, int c, size_t n);
+void				*ft_memset(void *s, int c, size_t n);
 
 /**
  * @brief Writes a character to the specified file descriptor.

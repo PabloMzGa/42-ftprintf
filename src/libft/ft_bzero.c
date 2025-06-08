@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 20:34:43 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/13 20:22:05 by pablo            ###   ########.fr       */
+/*   Created: 2024/09/10 20:46:42 by pabmart2          #+#    #+#             */
+/*   Updated: 2025/06/08 23:52:13 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-char	*ft_strdup(const char *s)
+void	ft_bzero(void *s, size_t n)
 {
-	size_t	len;
-	char	*cpy;
-
-	len = ft_strlen(s) + 1;
-	cpy = ft_calloc(len, sizeof(char));
-	if (!cpy)
-		return (NULL);
-	return (ft_memcpy(cpy, s, len));
+	ft_memset(s, 0, n);
 }

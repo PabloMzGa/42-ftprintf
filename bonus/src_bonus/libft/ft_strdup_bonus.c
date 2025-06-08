@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   ft_strdup_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 17:38:43 by pablo             #+#    #+#             */
-/*   Updated: 2025/03/31 22:11:34 by pabmart2         ###   ########.fr       */
+/*   Created: 2024/09/11 20:34:43 by pabmart2          #+#    #+#             */
+/*   Updated: 2025/06/08 23:59:20 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf_bonus.h"
 
-void	ft_free(void **ptr)
+char	*ft_strdup(const char *s)
 {
-	if (*ptr)
-	{
-		free(*ptr);
-		*ptr = NULL;
-	}
+	size_t	len;
+	char	*cpy;
+
+	len = ft_strlen(s) + 1;
+	cpy = ft_calloc(len, sizeof(char));
+	if (!cpy)
+		return (NULL);
+	return (ft_memcpy(cpy, s, len));
 }

@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/10 23:08:28 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/13 20:22:05 by pablo            ###   ########.fr       */
+/*   Created: 2024/09/10 20:11:59 by pabmart2          #+#    #+#             */
+/*   Updated: 2025/06/08 23:53:39 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	size_t	src_length;
-	size_t	i;
+	char	*temp_s;
+	char	byte;
 
-	i = 0;
-	src_length = ft_strlen(src);
-	if (src_length == 0)
+	temp_s = (char *)s;
+	byte = (char)c;
+	while (n > 0)
 	{
-		dst[0] = '\0';
-		return (0);
+		*temp_s = byte;
+		--n;
+		++temp_s;
 	}
-	if (size == 0)
-		return (src_length);
-	while (i < size - 1 && src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	if (size > 0)
-		dst[i] = '\0';
-	return (src_length);
+	return (s);
 }

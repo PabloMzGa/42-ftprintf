@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_isdigit_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/30 17:57:33 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/14 17:36:56 by pabmart2         ###   ########.fr       */
+/*   Created: 2024/09/10 16:53:29 by pabmart2          #+#    #+#             */
+/*   Updated: 2025/06/09 00:02:05 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf_bonus.h"
 
-int	ft_isspace(char c)
+int	ft_isdigit(int c)
 {
-	if ((c >= '\t' && c <= '\r') || c == ' ')
-		return (1);
-	return (0);
+	return (c >= '0' && c <= '9');
 }

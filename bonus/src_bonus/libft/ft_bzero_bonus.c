@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_bzero_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/10 17:33:10 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/31 22:03:44 by pabmart2         ###   ########.fr       */
+/*   Created: 2024/09/10 20:46:42 by pabmart2          #+#    #+#             */
+/*   Updated: 2025/06/08 23:47:42 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf_bonus.h"
 
-size_t	ft_strlen(const char *str)
+void	ft_bzero(void *s, size_t n)
 {
-	size_t	i;
-
-	i = 0;
-	if (str == NULL)
-		return (0);
-	while (str[i])
-		++i;
-	return (i);
+	ft_memset(s, 0, n);
 }

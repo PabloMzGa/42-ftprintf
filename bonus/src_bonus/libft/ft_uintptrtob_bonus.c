@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_uitob.c                                         :+:      :+:    :+:   */
+/*   ft_uintptrtob_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 17:39:57 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/13 20:22:05 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/08 23:48:08 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf_bonus.h"
 
 /**
  * @brief Recursively converts an unsigned integer to a string representation
@@ -28,7 +28,7 @@
  * @param str A pointer to the string where the result will be stored.
  * @return A pointer to the resulting string representation of the number.
  */
-static char	*set_n_base(unsigned int un, unsigned int base_l, char *base,
+static char	*set_n_base(uintptr_t un, unsigned int base_l, char *base,
 		char *str)
 {
 	if (un >= base_l)
@@ -52,18 +52,18 @@ static char	*set_n_base(unsigned int un, unsigned int base_l, char *base,
  * @param un The unsigned integer to be converted.
  * @param base_l The base in which the number is to be represented.
  * @param counter The current count of digits (initially should be 0).
+
  * @return The total number of digits required to represent the number
  *         in the given base.
  */
-static size_t	count_base_c(unsigned int un, unsigned int base_l,
-		size_t counter)
+static size_t	count_base_c(uintptr_t un, unsigned int base_l, size_t counter)
 {
 	if (un >= base_l)
 		return (count_base_c(un / base_l, base_l, ++counter));
 	return (counter + 1);
 }
 
-char	*ft_uitob(unsigned int nbr, char *base)
+char	*ft_uintptrtob(uintptr_t nbr, char *base)
 {
 	size_t	base_l;
 	char	*str;

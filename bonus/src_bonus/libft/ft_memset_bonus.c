@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_memset_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 21:08:54 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/04/07 13:19:06 by pablo            ###   ########.fr       */
+/*   Created: 2024/09/10 20:11:59 by pabmart2          #+#    #+#             */
+/*   Updated: 2025/06/08 23:55:48 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdio.h>
+#include "ft_printf_bonus.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	size_t	len;
-	char	*joined;
+	char	*temp_s;
+	char	byte;
 
-	if (!s1 && s2)
-		return (ft_strdup(s2));
-	else if (s1 && !s2)
-		return (ft_strdup(s1));
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	joined = malloc(sizeof(char) * len);
-	if (!joined)
-		return (NULL);
-	joined[0] = '\0';
-	ft_strlcat(joined, s1, len);
-	ft_strlcat(joined, s2, len);
-	return (joined);
+	temp_s = (char *)s;
+	byte = (char)c;
+	while (n > 0)
+	{
+		*temp_s = byte;
+		--n;
+		++temp_s;
+	}
+	return (s);
 }

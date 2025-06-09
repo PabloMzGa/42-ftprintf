@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_test.cold                                     :+:      :+:    :+:   */
+/*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:15:00 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/08 21:42:23 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/09 09:51:32 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bonus/include_bonus/ft_printf_bonus.h"
-#include "lib/libft/include/libft.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 #define RED "\033[0;31m"
 #define GREEN "\033[0;32m"
@@ -182,6 +182,45 @@ void	test_percent(const char *desc, const char *format)
 	printf(PURPLE "ft_printf: " RESET);
 	fflush(stdout);
 	ret2 = ft_printf(format);
+	printf("\n");
+	fflush(stdout);
+
+	if (ret1 == ret2)
+	{
+		printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1);
+		g_passed++;
+	}
+	else
+	{
+		printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2);
+	}
+	printf("----------------------------------------\n\n");
+}
+
+void	test_multiple(const char *desc, const char *format, ...)
+{
+	int		ret1, ret2;
+	va_list	args1, args2;
+
+	g_test_count++;
+	printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc);
+	printf(YELLOW "Format: \"%s\"" RESET "\n", format);
+
+	// Primera llamada a printf
+	printf(BLUE "printf   : " RESET);
+	fflush(stdout);
+	va_start(args1, format);
+	ret1 = vprintf(format, args1);
+	va_end(args1);
+	printf("\n");
+	fflush(stdout);
+
+	// Segunda llamada a ft_printf
+	printf(PURPLE "ft_printf: " RESET);
+	fflush(stdout);
+	va_start(args2, format);
+	ret2 = ft_printf(format, args2);
+	va_end(args2);
 	printf("\n");
 	fflush(stdout);
 
@@ -404,20 +443,110 @@ int	main(void)
 	// Combination of space and plus flags (plus takes precedence)
 	printf(GREEN "=== SPACE AND PLUS FLAG COMBINATION ===\n\n" RESET);
 	test_int("Space and plus flags positive (d)", "% +d", 42);
-	test_int("Plus and space flags positive (d)", "+ %d", 42);
+	test_int("Plus and space flags positive (d)", "%+ d", 42);
 	test_int("Space and plus flags negative (d)", "% +d", -42);
-	test_int("Plus and space flags negative (d)", "+ %d", -42);
+	test_int("Plus and space flags negative (d)", "%+ d", -42);
 	test_int("Space and plus flags zero (d)", "% +d", 0);
-	test_int("Plus and space flags zero (d)", "+ %d", 0);
+	test_int("Plus and space flags zero (d)", "%+ d", 0);
 	test_int("Space and plus flags with width (d)", "% +10d", 42);
-	test_int("Plus and space flags with width (d)", "+ %10d", 42);
+	test_int("Plus and space flags with width (d)", "%+ 10d", 42);
 
-	// Percent tests
-	printf(GREEN "=== PERCENT TESTS ===\n\n" RESET);
-	test_percent("Basic percent", "%%");
-	test_percent("Percent with width", "%5%");
-	test_percent("Percent with left align", "%-5%");
-	test_percent("Percent with zero padding", "%05%");
+	// ADDITIONAL EDGE CASES
+	printf(GREEN "=== ADDITIONAL EDGE CASES ===\n\n" RESET);
+
+	// Maximum width tests
+	test_int("Very large width", "%100d", 42);
+	test_string("Very large width with string", "%100s", "test");
+	test_char("Very large width with char", "%100c", 'A');
+
+	// Zero precision with different values
+	test_int("Zero precision with non-zero value", "%.0d", 42);
+	test_int("Zero precision with negative value", "%.0d", -42);
+	test_string("Zero precision with string", "%.0s", "Hello");
+
+	// Precision larger than number
+	test_int("Precision larger than number", "%.10d", 42);
+	test_int("Precision larger than negative number", "%.10d", -42);
+
+	// Width smaller than content
+	test_int("Width smaller than content", "%2d", 12345);
+	test_string("Width smaller than string", "%2s", "Hello");
+
+	// Combination of precision and width
+	test_int("Width and precision both large", "%20.15d", 42);
+	test_string("Width and precision with string", "%20.3s", "Hello World");
+
+	// Edge cases with zero
+	test_int("Zero with various formats", "%+d", 0);
+	test_int("Zero with space flag", "% d", 0);
+	test_int("Zero with width and precision", "%10.5d", 0);
+	test_int("Zero with # flag (should have no effect)", "%#d", 0);
+
+	// Multiple format specifiers in one string
+	printf(GREEN "=== MULTIPLE SPECIFIERS IN ONE STRING ===\n\n" RESET);
+	test_multiple("Multiple integers", "%d %d", 42, 24);
+	test_multiple("Mixed types", "%c %s %d", 'A', "Hello", 42);
+	test_multiple("Complex mixed", "%+d %#x %s %c", -42, 255, "test", '!');
+	test_multiple("Multiple with flags", "%+10d %-15s %#08x", 42, "Hello", 255);
+	test_multiple("All specifiers", "%c %s %p %d %i %u %x %X %%", 'A', "test", ptr, 42, -42, 42U, 42, 42);
+
+	// Invalid or edge format specifiers
+	printf(GREEN "=== INVALID/EDGE FORMAT SPECIFIERS ===\n\n" RESET);
+	test_percent("Just percent without flags", "%");
+	// Note: This might cause undefined behavior, test carefully
+
+	// Extreme values
+	printf(GREEN "=== EXTREME VALUES ===\n\n" RESET);
+	test_int("Maximum positive int", "%d", 2147483647);
+	test_int("Minimum negative int", "%d", -2147483648);
+	test_int("Maximum unsigned", "%u", 4294967295U);
+	test_int("Zero unsigned", "%u", 0U);
+	test_int("Large hex value", "%x", 0xFFFFFFFF);
+	test_int("Large hex value uppercase", "%X", 0xFFFFFFFF);
+
+	// Special characters in strings
+	printf(GREEN "=== SPECIAL CHARACTERS ===\n\n" RESET);
+	test_string("String with newlines", "%s", "Line1\nLine2\nLine3");
+	test_string("String with tabs", "%s", "Col1\tCol2\tCol3");
+	test_string("String with special chars", "%s", "Special: !@#$%^&*()");
+	test_char("Newline character", "%c", '\n');
+	test_char("Tab character", "%c", '\t');
+	test_char("Carriage return", "%c", '\r');
+
+	// Precision with hexadecimal
+	printf(GREEN "=== PRECISION WITH HEXADECIMAL ===\n\n" RESET);
+	test_int("Hex with precision", "%.5x", 42);
+	test_int("Hex uppercase with precision", "%.5X", 42);
+	test_int("Hex with zero precision", "%.0x", 42);
+	test_int("Hex zero value with precision", "%.5x", 0);
+	test_int("Hex # flag with precision", "%#.5x", 42);
+	test_int("Hex # flag zero value with precision", "%#.0x", 0);
+
+	// Complex flag combinations
+	printf(GREEN "=== COMPLEX FLAG COMBINATIONS ===\n\n" RESET);
+	test_int("All flags combined positive", "%+- #020.10d", 42);
+	test_int("All flags combined negative", "%+- #020.10d", -42);
+	test_int("Hex with all applicable flags", "%+- #020.10x", 42);
+	test_string("String with all applicable flags", "%- 20.10s", "Hello");
+
+	// Memory and performance tests
+	printf(GREEN "=== MEMORY AND PERFORMANCE TESTS ===\n\n" RESET);
+	test_string("Very long string", "%s", "This is a very long string that should test the memory allocation and performance of ft_printf when dealing with large amounts of text data that might stress the implementation");
+	test_string("Long string with precision", "%.50s", "This is a very long string that should test the memory allocation and performance of ft_printf when dealing with large amounts of text data that might stress the implementation");
+	test_multiple("Multiple large conversions", "%d %d %d %d %d", 2147483647, -2147483648, 1234567890, -987654321, 555666777);
+
+	// Edge cases that might cause undefined behavior (test carefully)
+	printf(GREEN "=== POTENTIAL EDGE CASES (TEST CAREFULLY) ===\n\n" RESET);
+	test_percent("Double percent", "%%%%");
+	test_string("Percent in string", "%s", "This string contains %% characters");
+
+	// Boundary tests for width and precision
+	printf(GREEN "=== BOUNDARY TESTS ===\n\n" RESET);
+	test_int("Width 1", "%1d", 42);
+	test_int("Precision 1", "%.1d", 42);
+	test_string("String precision 1", "%.1s", "Hello");
+	test_int("Width equals content", "%2d", 42);
+	test_string("Width equals string length", "%5s", "Hello");
 
 	// Summary
 	printf(CYAN "========================================\n");

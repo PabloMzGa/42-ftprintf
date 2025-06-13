@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:26:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/08 23:54:06 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 13:20:38 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void			*ft_calloc(size_t nmemb, size_t size);
  *       to this function was allocated dynamically (e.g., using malloc, calloc,
  *       or realloc).
  */
-void			ft_free(void **ptr);
+void				ft_free(void **ptr);
 
 /**
  * @brief Converts an integer to a null-terminated string.

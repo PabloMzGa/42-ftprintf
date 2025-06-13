@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   padding_formatter_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 15:31:56 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/08 21:08:01 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 13:04:52 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*create_padding(char *print, char *digit_pos, char padding_c)
 	int		i;
 	int		width;
 
+	while (*digit_pos && (*digit_pos == '0' || !ft_isdigit(*digit_pos)))
+		++digit_pos;
 	width = ft_atoi(digit_pos);
 	n_padding = width - ft_strlen(print);
 	if (n_padding <= 0)

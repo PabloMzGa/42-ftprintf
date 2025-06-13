@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_uintptrtob.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 17:39:57 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/08 23:40:41 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 13:11:54 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static char	*set_n_base(uintptr_t un, unsigned int base_l, char *base,
  * @return The total number of digits required to represent the number
  *         in the given base.
  */
-static size_t	count_base_c(uintptr_t un, unsigned int base_l, size_t counter)
+static size_t	count_base_c(uintptr_t un, unsigned int base_l,
+		size_t counter)
 {
 	if (un >= base_l)
 		return (count_base_c(un / base_l, base_l, ++counter));
@@ -65,8 +66,8 @@ static size_t	count_base_c(uintptr_t un, unsigned int base_l, size_t counter)
 
 char	*ft_uintptrtob(uintptr_t nbr, char *base)
 {
-	size_t	base_l;
-	char	*str;
+	size_t			base_l;
+	char			*str;
 
 	base_l = ft_strlen(base);
 	str = ft_calloc(count_base_c(nbr, base_l, 0) + 1, sizeof(char));

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_test.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:15:00 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/09 09:51:32 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 15:04:42 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bonus/include_bonus/ft_printf_bonus.h"
+#include "../bonus/include_bonus/ft_printf_bonus.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
@@ -174,14 +174,14 @@ void	test_percent(const char *desc, const char *format)
 	// Primera llamada a printf
 	printf(BLUE "printf   : " RESET);
 	fflush(stdout);
-	ret1 = printf(format);
+	ret1 = printf("%s", format);
 	printf("\n");
 	fflush(stdout);
 
 	// Segunda llamada a ft_printf
 	printf(PURPLE "ft_printf: " RESET);
 	fflush(stdout);
-	ret2 = ft_printf(format);
+	ret2 = ft_printf("%s", format);
 	printf("\n");
 	fflush(stdout);
 
@@ -197,44 +197,156 @@ void	test_percent(const char *desc, const char *format)
 	printf("----------------------------------------\n\n");
 }
 
-void	test_multiple(const char *desc, const char *format, ...)
-{
-	int		ret1, ret2;
-	va_list	args1, args2;
+// Test function for multiple arguments - creates specific test functions for each case
+#define test_multiple_2(desc, format, arg1, arg2) \
+	do { \
+		int ret1, ret2; \
+		g_test_count++; \
+		printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc); \
+		printf(YELLOW "Format: \"%s\"" RESET "\n", format); \
+		printf(BLUE "printf   : " RESET); \
+		fflush(stdout); \
+		ret1 = printf(format, arg1, arg2); \
+		printf("\n"); \
+		fflush(stdout); \
+		printf(PURPLE "ft_printf: " RESET); \
+		fflush(stdout); \
+		ret2 = ft_printf(format, arg1, arg2); \
+		printf("\n"); \
+		fflush(stdout); \
+		if (ret1 == ret2) { \
+			printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1); \
+			g_passed++; \
+		} else { \
+			printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2); \
+		} \
+		printf("----------------------------------------\n\n"); \
+	} while(0)
 
-	g_test_count++;
-	printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc);
-	printf(YELLOW "Format: \"%s\"" RESET "\n", format);
+#define test_multiple_3(desc, format, arg1, arg2, arg3) \
+	do { \
+		int ret1, ret2; \
+		g_test_count++; \
+		printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc); \
+		printf(YELLOW "Format: \"%s\"" RESET "\n", format); \
+		printf(BLUE "printf   : " RESET); \
+		fflush(stdout); \
+		ret1 = printf(format, arg1, arg2, arg3); \
+		printf("\n"); \
+		fflush(stdout); \
+		printf(PURPLE "ft_printf: " RESET); \
+		fflush(stdout); \
+		ret2 = ft_printf(format, arg1, arg2, arg3); \
+		printf("\n"); \
+		fflush(stdout); \
+		if (ret1 == ret2) { \
+			printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1); \
+			g_passed++; \
+		} else { \
+			printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2); \
+		} \
+		printf("----------------------------------------\n\n"); \
+	} while(0)
 
-	// Primera llamada a printf
-	printf(BLUE "printf   : " RESET);
-	fflush(stdout);
-	va_start(args1, format);
-	ret1 = vprintf(format, args1);
-	va_end(args1);
-	printf("\n");
-	fflush(stdout);
+#define test_multiple_4(desc, format, arg1, arg2, arg3, arg4) \
+	do { \
+		int ret1, ret2; \
+		g_test_count++; \
+		printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc); \
+		printf(YELLOW "Format: \"%s\"" RESET "\n", format); \
+		printf(BLUE "printf   : " RESET); \
+		fflush(stdout); \
+		ret1 = printf(format, arg1, arg2, arg3, arg4); \
+		printf("\n"); \
+		fflush(stdout); \
+		printf(PURPLE "ft_printf: " RESET); \
+		fflush(stdout); \
+		ret2 = ft_printf(format, arg1, arg2, arg3, arg4); \
+		printf("\n"); \
+		fflush(stdout); \
+		if (ret1 == ret2) { \
+			printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1); \
+			g_passed++; \
+		} else { \
+			printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2); \
+		} \
+		printf("----------------------------------------\n\n"); \
+	} while(0)
 
-	// Segunda llamada a ft_printf
-	printf(PURPLE "ft_printf: " RESET);
-	fflush(stdout);
-	va_start(args2, format);
-	ret2 = ft_printf(format, args2);
-	va_end(args2);
-	printf("\n");
-	fflush(stdout);
+#define test_multiple_5(desc, format, arg1, arg2, arg3, arg4, arg5) \
+	do { \
+		int ret1, ret2; \
+		g_test_count++; \
+		printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc); \
+		printf(YELLOW "Format: \"%s\"" RESET "\n", format); \
+		printf(BLUE "printf   : " RESET); \
+		fflush(stdout); \
+		ret1 = printf(format, arg1, arg2, arg3, arg4, arg5); \
+		printf("\n"); \
+		fflush(stdout); \
+		printf(PURPLE "ft_printf: " RESET); \
+		fflush(stdout); \
+		ret2 = ft_printf(format, arg1, arg2, arg3, arg4, arg5); \
+		printf("\n"); \
+		fflush(stdout); \
+		if (ret1 == ret2) { \
+			printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1); \
+			g_passed++; \
+		} else { \
+			printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2); \
+		} \
+		printf("----------------------------------------\n\n"); \
+	} while(0)
 
-	if (ret1 == ret2)
-	{
-		printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1);
-		g_passed++;
-	}
-	else
-	{
-		printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2);
-	}
-	printf("----------------------------------------\n\n");
-}
+#define test_multiple_8(desc, format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) \
+	do { \
+		int ret1, ret2; \
+		g_test_count++; \
+		printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc); \
+		printf(YELLOW "Format: \"%s\"" RESET "\n", format); \
+		printf(BLUE "printf   : " RESET); \
+		fflush(stdout); \
+		ret1 = printf(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8); \
+		printf("\n"); \
+		fflush(stdout); \
+		printf(PURPLE "ft_printf: " RESET); \
+		fflush(stdout); \
+		ret2 = ft_printf(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8); \
+		printf("\n"); \
+		fflush(stdout); \
+		if (ret1 == ret2) { \
+			printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1); \
+			g_passed++; \
+		} else { \
+			printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2); \
+		} \
+		printf("----------------------------------------\n\n"); \
+	} while(0)
+
+#define test_multiple_9(desc, format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) \
+	do { \
+		int ret1, ret2; \
+		g_test_count++; \
+		printf(CYAN "Test %d: %s" RESET "\n", g_test_count, desc); \
+		printf(YELLOW "Format: \"%s\"" RESET "\n", format); \
+		printf(BLUE "printf   : " RESET); \
+		fflush(stdout); \
+		ret1 = printf(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9); \
+		printf("\n"); \
+		fflush(stdout); \
+		printf(PURPLE "ft_printf: " RESET); \
+		fflush(stdout); \
+		ret2 = ft_printf(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9); \
+		printf("\n"); \
+		fflush(stdout); \
+		if (ret1 == ret2) { \
+			printf(GREEN "✓ PASS - Return values match (%d)" RESET "\n", ret1); \
+			g_passed++; \
+		} else { \
+			printf(RED "✗ FAIL - Return values differ: printf=%d, ft_printf=%d" RESET "\n", ret1, ret2); \
+		} \
+		printf("----------------------------------------\n\n"); \
+	} while(0)
 
 int	main(void)
 {
@@ -484,11 +596,11 @@ int	main(void)
 
 	// Multiple format specifiers in one string
 	printf(GREEN "=== MULTIPLE SPECIFIERS IN ONE STRING ===\n\n" RESET);
-	test_multiple("Multiple integers", "%d %d", 42, 24);
-	test_multiple("Mixed types", "%c %s %d", 'A', "Hello", 42);
-	test_multiple("Complex mixed", "%+d %#x %s %c", -42, 255, "test", '!');
-	test_multiple("Multiple with flags", "%+10d %-15s %#08x", 42, "Hello", 255);
-	test_multiple("All specifiers", "%c %s %p %d %i %u %x %X %%", 'A', "test", ptr, 42, -42, 42U, 42, 42);
+	test_multiple_2("Multiple integers", "%d %d", 42, 24);
+	test_multiple_3("Mixed types", "%c %s %d", 'A', "Hello", 42);
+	test_multiple_4("Complex mixed", "%+d %#x %s %c", -42, 255, "test", '!');
+	test_multiple_3("Multiple with flags", "%+10d %-15s %#08x", 42, "Hello", 255);
+	test_multiple_8("All specifiers", "%c %s %p %d %i %u %x %X %%", 'A', "test", ptr, 42, -42, 42U, 42, 42);
 
 	// Invalid or edge format specifiers
 	printf(GREEN "=== INVALID/EDGE FORMAT SPECIFIERS ===\n\n" RESET);
@@ -533,7 +645,7 @@ int	main(void)
 	printf(GREEN "=== MEMORY AND PERFORMANCE TESTS ===\n\n" RESET);
 	test_string("Very long string", "%s", "This is a very long string that should test the memory allocation and performance of ft_printf when dealing with large amounts of text data that might stress the implementation");
 	test_string("Long string with precision", "%.50s", "This is a very long string that should test the memory allocation and performance of ft_printf when dealing with large amounts of text data that might stress the implementation");
-	test_multiple("Multiple large conversions", "%d %d %d %d %d", 2147483647, -2147483648, 1234567890, -987654321, 555666777);
+	test_multiple_5("Multiple large conversions", "%d %d %d %d %d", 2147483647, (int)-2147483648, 1234567890, -987654321, 555666777);
 
 	// Edge cases that might cause undefined behavior (test carefully)
 	printf(GREEN "=== POTENTIAL EDGE CASES (TEST CAREFULLY) ===\n\n" RESET);
@@ -552,14 +664,246 @@ int	main(void)
 	printf(CYAN "========================================\n");
 	printf("              SUMMARY\n");
 	printf("========================================\n" RESET);
-	printf("Total tests: %d\n", g_test_count);
+
+	// ADDITIONAL COMPREHENSIVE TESTS SUGGESTED
+	printf(GREEN "=== ADDITIONAL EDGE CASES TESTS ===\n\n" RESET);
+
+	// Tests for numeric edge cases
+	test_int("Binary boundary INT_MAX", "%d", 2147483647);
+	test_int("Binary boundary INT_MIN", "%d", -2147483648);
+	test_int("Power of 2 values", "%d", 1024);
+	test_int("Power of 2 values negative", "%d", -1024);
+
+	// Zero with different formatters
+	test_int("Zero with # flag and hex", "%#x", 0);
+	test_int("Zero with # flag and HEX", "%#X", 0);
+	test_int("Zero with + flag", "%+d", 0);
+	test_int("Zero with space flag", "% d", 0);
+	test_int("Zero with width and +", "%+5d", 0);
+	test_int("Zero with width and space", "% 5d", 0);
+
+	// Tests for flag interaction edge cases
+	test_int("Zero padding vs left align", "%-05d", 42);  // left align should override zero padding
+	test_int("Zero padding vs left align negative", "%-05d", -42);
+	test_int("Plus and space flags together", "%+ d", 42);  // plus should take precedence
+	test_int("All flags with zero", "%#+-010.5d", 0);
+
+	// String edge cases
+	test_string("Very long string with small width", "%5s", "This is a very long string that exceeds the width");
+	test_string("String with precision larger than length", "%.50s", "Short");
+	test_string("Empty string with precision", "%.5s", "");
+	test_string("Empty string with width", "%10s", "");
+
+	// Character edge cases
+	test_char("Space character", "%c", ' ');
+	test_char("Character with very large width", "%50c", 'X');
+	test_char("Character with flags (should ignore most)", "%+#- 05c", 'Y');
+
+	// Pointer edge cases
+	void *null_ptr = NULL;
+	void *high_addr = (void *)0xFFFFFFFF;
+	test_ptr("High address pointer", "%p", high_addr);
+	test_ptr("Null pointer with width", "%20p", null_ptr);
+/* 	test_ptr("Pointer with precision (undefined but test)", "%.10p", ptr); */
+
+	// Hexadecimal edge cases
+	test_int("Hex with all F's", "%x", 0xFFFF);
+	test_int("Hex with mixed case input", "%x", 0xaBcD);
+	test_int("Hex # flag with various numbers", "%#x", 0x1);
+	test_int("Hex # flag with various numbers uppercase", "%#X", 0x1);
+	test_int("Very large precision with hex", "%.20x", 42);
+	test_int("Zero padding larger than content hex", "%020x", 42);
+
+	// Unsigned edge cases
+	test_int("Unsigned max value", "%u", 4294967295U);
+	test_int("Unsigned with leading zeros via precision", "%.10u", 42U);
+	test_int("Unsigned zero with precision", "%.5u", 0U);
+
+	// Width and precision interaction
+	test_int("Width < precision for integers", "%5.10d", 42);
+	test_int("Width = precision for integers", "%10.10d", 42);
+	test_int("Width > precision for integers", "%15.10d", 42);
+	test_string("Width < precision for strings", "%5.10s", "Hello World");
+
+	// Multiple specifiers stress test
+	test_multiple_8("Stress test all types", "%c|%s|%p|%d|%i|%u|%x|%X", 'Z', "test", ptr, -42, 42, 42U, 255, 255);
+
+	// Flag precedence tests
+	test_int("Multiple contradictory flags 1", "%0-10d", 42);  // left align wins over zero pad
+	test_int("Multiple contradictory flags 2", "%+-10d", 42);  // plus wins over space
+	test_int("Multiple contradictory flags 3", "% +010d", 42); // plus wins, left align wins
+
+	// Format string edge cases
+	test_percent("Multiple percent signs", "%%%%%%");
+	test_percent("Percent at end", "Text ends with %");
+
+	// Precision zero with various types
+	test_int("Precision zero with positive", "%.0d", 123);
+	test_int("Precision zero with negative", "%.0d", -123);
+	test_int("Precision zero with hex", "%.0x", 123);
+	test_int("Precision zero with HEX", "%.0X", 123);
+	test_int("Precision zero with unsigned", "%.0u", 123U);
+
+	// Tests with very specific values that might cause issues
+	test_int("Value 1", "%d", 1);
+	test_int("Value -1", "%d", -1);
+	test_int("Value 10", "%d", 10);
+	test_int("Value -10", "%d", -10);
+	test_int("Hex value 16", "%x", 16);  // 0x10
+	test_int("Hex value 255", "%x", 255); // 0xff
+
+	// String with only special characters
+	test_string("Only special chars", "%s", "\n\t\r\v\f");
+	test_string("Only spaces", "%s", "     ");
+
+	// Tests for consistency between %d and %i
+	test_multiple_2("d vs i comparison", "%d equals %i", 42, 42);
+	test_multiple_2("d vs i negative", "%d equals %i", -42, -42);
+
+	// Tests específicos para el comportamiento del signo %
+	printf(GREEN "=== PERCENT SIGN EDGE CASES ===\n\n" RESET);
+	test_percent("Isolated percent", "%");
+	test_percent("Text with percent", "Progress: 50%% complete");
+	test_multiple_2("Mixed percent and format", "Value: %d (that's %d%%)", 50, 100);
+
+	// Tests para valores límite con diferentes bases
+	printf(GREEN "=== BASE CONVERSION LIMITS ===\n\n" RESET);
+	test_int("Binary boundary in hex", "%x", 0x7FFFFFFF);
+	test_int("Binary boundary in HEX", "%X", 0x7FFFFFFF);
+	test_int("All bits set in hex", "%x", 0xFFFFFFFF);
+	test_int("All bits set in HEX", "%X", 0xFFFFFFFF);
+
+	// Tests para interacción compleja de flags
+	printf(GREEN "=== COMPLEX FLAG INTERACTIONS ===\n\n" RESET);
+	test_int("Zero pad vs left align precedence", "%-010d", 42);
+	test_int("Plus vs space precedence", "%+ d", 42);
+	test_int("All flags with negative", "%#+-010.5d", -42);
+	test_int("All flags with zero", "%#+-010.5d", 0);
+
+	// Tests para casos que podrían causar overflow en buffers
+	printf(GREEN "=== BUFFER STRESS TESTS ===\n\n" RESET);
+	test_int("Maximum width test", "%200d", 42);
+	test_int("Maximum precision test", "%.200d", 42);
+	test_string("Maximum width string", "%200s", "short");
+
+	/* printf("Total tests: %d\n", g_test_count);
 	printf("Passed: " GREEN "%d\n" RESET, g_passed);
-	printf("Failed: " RED "%d\n" RESET, g_test_count - g_passed);
+	printf("Failed: " RED "%d\n" RESET, g_test_count - g_passed); */
+
+	// ADDITIONAL TESTS FOR COMPREHENSIVE COVERAGE
+	printf(CYAN "\n========================================\n");
+	printf("   ADDITIONAL EDGE CASE TESTS\n");
+	printf("========================================\n\n" RESET);
+
+	// Tests para caracteres ASCII extremos
+	printf(GREEN "=== EXTREME ASCII CHARACTER TESTS ===\n\n" RESET);
+	test_char("ASCII 0 (null)", "%c", 0);
+	test_char("ASCII 1", "%c", 1);
+	test_char("ASCII 127 (DEL)", "%c", 127);
+	test_char("Character 255", "%c", 255);
+
+	// Tests para combinaciones de flags complejas
+	printf(GREEN "=== COMPLEX FLAG COMBINATIONS ===\n\n" RESET);
+	test_int("Triple flag combination", "%+-#10d", 42);
+	test_int("Quad flag combination", "%+-# 10d", 42);
+	test_int("Five flag combination", "%+-#0 10d", 42);
+	test_int("Hex with complex flags", "%+-#020.8x", 42);
+	test_int("Uppercase hex complex", "%+-#020.8X", 42);
+
+	// Tests para valores específicos que pueden causar problemas
+	printf(GREEN "=== PROBLEMATIC VALUES ===\n\n" RESET);
+	test_int("Power of 2 - 1", "%d", 1023);
+	test_int("Power of 2", "%d", 1024);
+	test_int("Power of 2 + 1", "%d", 1025);
+	test_int("Hex powers of 16", "%x", 256);
+	test_int("Hex powers of 16", "%x", 4096);
+	test_int("Binary significant values", "%d", 32767);
+	test_int("Binary significant values", "%d", 65535);
+
+	// Tests para strings con caracteres de control
+	printf(GREEN "=== CONTROL CHARACTER STRINGS ===\n\n" RESET);
+	test_string("String with bell", "%s", "Alert\a");
+	test_string("String with backspace", "%s", "Back\bspace");
+	test_string("String with form feed", "%s", "Form\ffeed");
+	test_string("String with vertical tab", "%s", "Vert\vtab");
+
+	// Tests para casos donde precision > width significativamente
+	printf(GREEN "=== PRECISION VS WIDTH EXTREMES ===\n\n" RESET);
+	test_int("Precision much larger than width", "%5.20d", 42);
+	test_int("Width much larger than precision", "%20.5d", 42);
+	test_string("String precision vs width", "%5.20s", "Hello");
+	test_string("String width vs precision", "%20.5s", "Hello World Extended");
+
+	// Tests para números con patrones específicos
+	printf(GREEN "=== SPECIFIC NUMBER PATTERNS ===\n\n" RESET);
+	test_int("All ones in binary", "%d", 1111);
+	test_int("Alternating pattern", "%d", 1010);
+	test_int("Hex nice patterns", "%x", 0x1234);
+	test_int("Hex nice patterns upper", "%X", 0xABCD);
+	test_int("Palindromic number", "%d", 12321);
+
+	// Tests para múltiples argumentos con tipos mezclados
+	printf(GREEN "=== COMPLEX MULTI-ARGUMENT TESTS ===\n\n" RESET);
+	test_multiple_8("All types mixed max args", "%c%s%p%d%i%u%x%X", 'M', "str", ptr, -1, 2, 3U, 4, 5);
+	test_multiple_4("Flags mixed types", "%+d%#x%-10s%5c", -42, 255, "test", 'A');
+	test_multiple_3("Precision mixed", "%.3d%.5s%.2x", 123, "hello", 255);
+
+	// Tests para casos donde los flags no deberían tener efecto
+	printf(GREEN "=== FLAGS WITH NO EFFECT VALIDATION ===\n\n" RESET);
+	test_char("All flags with char", "%+-#0 5c", 'X');
+	test_string("Numeric flags with string", "%+#010.5s", "test");
+	test_ptr("Numeric flags with pointer", "%+#010p", ptr);
+
+	// Tests para manejo de memoria extremo
+	printf(GREEN "=== MEMORY STRESS TESTS ===\n\n" RESET);
+	test_string("Very wide format", "%500s", "short");
+	test_int("Very wide number", "%500d", 42);
+	test_int("Very high precision", "%.500d", 42);
+
+	// Tests específicos para el símbolo %
+	printf(GREEN "=== PERCENT SYMBOL EDGE CASES ===\n\n" RESET);
+	test_percent("Percent with width and left align", "%-10%");
+	test_percent("Percent with zero padding", "%010%");
+	test_percent("Multiple percents in sequence", "%%%%%%%%");
+
+	// Tests para verificar la robustez del parser
+	printf(GREEN "=== PARSER ROBUSTNESS TESTS ===\n\n" RESET);
+	test_int("Format with many digits", "%00000000000010d", 42);
+	test_int("Format with leading zeros", "%010.05d", 42);
+	test_string("Complex string format", "%030.15s", "test string");
+
+	// Tests para casos límite de hex con # flag
+	printf(GREEN "=== HEX # FLAG EDGE CASES ===\n\n" RESET);
+	test_int("# flag with hex 1", "%#x", 1);
+	test_int("# flag with hex small", "%#x", 0xf);
+	test_int("# flag with hex medium", "%#x", 0xff);
+	test_int("# flag with hex large", "%#x", 0xfff);
+
+	// Tests para verificar comportamiento con valores negativos en unsigned
+	printf(GREEN "=== UNSIGNED WITH NEGATIVE INPUTS ===\n\n" RESET);
+	test_int("Negative as unsigned", "%u", -1);
+	test_int("Negative as hex", "%x", -1);
+	test_int("Negative as HEX", "%X", -1);
+	test_int("Negative with # flag hex", "%#x", -1);
+
+	// Tests finales para consistencia
+	printf(GREEN "=== CONSISTENCY VERIFICATION ===\n\n" RESET);
+	test_multiple_2("Same value different formats", "%d vs %i", 42, 42);
+	test_multiple_2("Same value hex formats", "%x vs %X", 255, 255);
+	test_multiple_3("Flags consistency", "%+d % d %d", 42, 42, 42);
+
+	printf(CYAN "\n========================================\n");
+	printf("       FINAL COMPREHENSIVE SUMMARY\n");
+	printf("========================================\n" RESET);
+	printf("Total tests executed: %d\n", g_test_count);
+	printf("Tests passed: " GREEN "%d" RESET "\n", g_passed);
+	printf("Tests failed: " RED "%d" RESET "\n", g_test_count - g_passed);
+	printf("Success rate: %.2f%%\n", (float)g_passed / g_test_count * 100);
 
 	if (g_passed == g_test_count)
-		printf(GREEN "🎉 ALL TESTS PASSED! 🎉\n" RESET);
+		printf(GREEN "\n🎉 PERFECT SCORE! ALL TESTS PASSED! 🎉\n" RESET);
 	else
-		printf(RED "❌ Some tests failed. Check the output above.\n" RESET);
+		printf(RED "\n❌ Some tests need attention. Review failed cases above.\n" RESET);
 
 	return (0);
 }

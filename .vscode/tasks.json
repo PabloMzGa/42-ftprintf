@@ -7,43 +7,12 @@
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"${workspaceFolder}/main.c",
-				"${workspaceFolder}/src/*.c",
-				"${workspaceFolder}/src/**/*.c",
-				"${workspaceFolder}/lib/libft/src/*.c",
-				"-I${workspaceFolder}/include",
-				"-I${workspaceFolder}/lib/libft/include",
-				"-I${workspaceFolder}/lib/libft/include/ft_get_next_line",
-				"-lm",
-				"-o",
-				"${workspaceFolder}/main.out"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}"
-			},
-			"problemMatcher": [
-				"$gcc"
-			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"detail": "Build main source files."
-		},
-		{
-			"type": "cppbuild",
-			"label": "build main with bonus",
-			"command": "/usr/bin/gcc",
-			"args": [
-				"-fdiagnostics-color=always",
-				"-g",
-				"${workspaceFolder}/main.c",
+				"${workspaceFolder}/test/main.c",
 				"${workspaceFolder}/bonus/src_bonus/*.c",
-				"${workspaceFolder}/bonus/src_bonus/**/*.c",
-				"${workspaceFolder}/lib/libft/src/*.c",
+				"${workspaceFolder}/bonus/src_bonus/formaters/*.c",
+				"${workspaceFolder}/bonus/src_bonus/libft/*.c",
+				"${workspaceFolder}/bonus/src_bonus/printers/*.c",
 				"-I${workspaceFolder}/bonus/include_bonus",
-				"-I${workspaceFolder}/lib/libft/include",
-				"-I${workspaceFolder}/lib/libft/include/ft_get_next_line",
 				"-lm",
 				"-o",
 				"${workspaceFolder}/main.out"
@@ -57,6 +26,35 @@
 			"group": {
 				"kind": "build",
 				"isDefault": false
+			},
+			"detail": "Build main source files."
+		},
+		{
+			"type": "cppbuild",
+			"label": "build main with bonus",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}/main.c",
+				"${workspaceFolder}/bonus/src_bonus/*.c",
+				"${workspaceFolder}/bonus/src_bonus/formaters/*.c",
+				"${workspaceFolder}/bonus/src_bonus/libft/*.c",
+				"${workspaceFolder}/bonus/src_bonus/printers/*.c",
+				"-I${workspaceFolder}/bonus/include_bonus",
+				"-lm",
+				"-o",
+				"${workspaceFolder}/main.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
 			},
 			"detail": "Build main.c with bonus source files."
 		},
@@ -98,17 +96,13 @@
 				"-fdiagnostics-color=always",
 				"-g",
 				"${workspaceFolder}/bonus/src_bonus/*.c",
-				"${workspaceFolder}/bonus/src_bonus/**/*.c",
-				"${workspaceFolder}/lib/libft/src/*.c",
-				"${workspaceFolder}/lib/libft/src/**/*.c",
-				"${workspaceFolder}/lib/libft/src/**/**/*.c",
+				"${workspaceFolder}/bonus/src_bonus/formaters/*.c",
+				"${workspaceFolder}/bonus/src_bonus/libft/*.c",
+				"${workspaceFolder}/bonus/src_bonus/printers/*.c",
 				"-I${workspaceFolder}/bonus/include_bonus",
-				"-I${workspaceFolder}/lib/libft/include",
-				"-I${workspaceFolder}/lib/libft/include/ft_get_next_line",
-				"-I${workspaceFolder}/lib/libft/include/ft_printf",
 				"-lm",
 				"-o",
-				"${workspaceFolder}/bonus/checker.out"
+				"${workspaceFolder}/bonus/ft_printf_bonus.out"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -120,12 +114,12 @@
 				"kind": "build",
 				"isDefault": false
 			},
-			"detail": "Build bonus source files."
+			"detail": "Build bonus source files only."
 		},
 		{
 			"type": "shell",
 			"label": "run bonus src",
-			"command": "${workspaceFolder}/bonus/checker.out",
+			"command": "${workspaceFolder}/bonus/ft_printf_bonus.out",
 			"args": [],
 			"options": {
 				"cwd": "${workspaceFolder}"

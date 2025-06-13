@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_printer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:19:38 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/03/29 16:35:48 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 13:21:52 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int	p_printer(va_list arg)
 	ft_putstr_fd("0x", 1);
 	ft_putstr_fd(str, 1);
 	len = ft_strlen(str) + 2;
-	ft_free((void **)&str);
+	free(str);
 	return (len);
 }

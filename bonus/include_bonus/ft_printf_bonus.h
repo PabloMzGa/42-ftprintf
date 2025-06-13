@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:26:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/09 00:05:45 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 12:37:53 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int					ft_printf(char const *str,
 
 t_printer			check_printer(const char c);
 
-char				*parser(char *flags, va_list args);
+char				*parser(char *flags, int flags_size, va_list args);
 
 /****************************** PRINTERS **************************************/
 
@@ -193,7 +193,6 @@ char				*prct_printer(va_list arg);
  * @return The converted integer value.
  */
 int					ft_atoi(const char *nptr);
-
 
 /**
  * Sets the first n bytes of the memory pointed to by s to zero.
@@ -392,7 +391,6 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
  * @return The length of the source string.
  */
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
-
 
 /**
  * Calculates the length of a null-terminated string.

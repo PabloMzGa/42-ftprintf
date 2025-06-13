@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 17:38:43 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/08 23:40:20 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 13:20:15 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_free(void **ptr)
 {
-	if (*ptr)
+	if (ptr && *ptr)
 	{
 		free(*ptr);
 		*ptr = NULL;

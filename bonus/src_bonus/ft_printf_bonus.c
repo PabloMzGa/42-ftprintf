@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:18 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/08 21:41:35 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/13 12:48:21 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
 static const char	g_valid_end_flags[] = {'c', 's', 'p', 'd', 'i', 'u', 'x',
-	'X', 0};
+		'X', 0};
 
 static char	is_valid_flag(char flag)
 {
@@ -64,11 +64,13 @@ static int	call_printer(char **str, va_list args)
 	char	*formated;
 	char	*flags;
 	int		formated_len;
+	int		flags_size;
 
 	flags = extract_flags(*str);
-	formated = parser(flags, args);
+	flags_size = ft_strlen(flags);
+	formated = parser(flags, flags_size, args);
 	ft_putstr_fd(formated, STDOUT_FILENO);
-	*str += ft_strlen(flags);
+	*str += flags_size;
 	formated_len = ft_strlen(formated);
 	if (*formated == '\0' && ft_strchr(flags, 'c'))
 		formated_len = 1;
@@ -90,14 +92,13 @@ int	ft_printf(char const *str, ...)
 		{
 			ft_putchar_fd(*str, 1);
 			++char_counter;
+			++str;
 		}
-		else
+		else if (*str == '%')
 		{
 			++str;
 			char_counter += call_printer((char **)&str, args);
 		}
-		if (*str)
-			++str;
 	}
 	va_end(args);
 	return (char_counter);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   padding_formatter_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 15:31:56 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/13 13:04:52 by pabmart2         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:00:55 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,22 @@ static char	*search_first_digit(char *flags)
 	return (NULL);
 }
 
-char	*create_padding(char *print, char *digit_pos, char padding_c)
+char	*create_padding(char *print, char *digit_pos, char padding_c,
+		t_printer printer)
 {
 	char	*padding;
 	int		n_padding;
 	int		i;
 	int		width;
+	int		print_size;
 
 	while (*digit_pos && (*digit_pos == '0' || !ft_isdigit(*digit_pos)))
 		++digit_pos;
 	width = ft_atoi(digit_pos);
-	n_padding = width - ft_strlen(print);
+	print_size = ft_strlen(print);
+	if (print_size == 0 && printer.c == 'c')
+		print_size = 1;
+	n_padding = width - print_size;
 	if (n_padding <= 0)
 		return (ft_strdup(""));
 	padding = malloc(sizeof(char) * n_padding + 1);
@@ -57,10 +62,10 @@ static char	*get_padding(char *flags, char *print, t_printer printer)
 	if (digits_pos != NULL && *digits_pos == '0' && printer.c != 'c'
 		&& printer.c != 's' && printer.c != '%' && !ft_strchr(flags, '-')
 		&& !ft_strchr(flags, '.'))
-		return (create_padding(print, digits_pos, '0'));
+		return (create_padding(print, digits_pos, '0', printer));
 	else if (digits_pos != NULL && (((digits_pos != flags && *(digits_pos
 						- 1) != '.')) || digits_pos == flags))
-		return (create_padding(print, digits_pos, ' '));
+		return (create_padding(print, digits_pos, ' ', printer));
 	else
 		return (NULL);
 }
@@ -68,35 +73,38 @@ static char	*get_padding(char *flags, char *print, t_printer printer)
 char	*set_padding_negative(char *padding, char *print)
 {
 	char	*tmp;
+	char	*result;
 
-	tmp = ft_strdup(print + 1);
-	ft_free((void **)&print);
-	print = tmp;
-	tmp = padding;
-	padding = ft_strjoin("-", padding);
+	tmp = ft_strjoin("-", padding);
+	result = ft_strjoin(tmp, print + 1);
 	ft_free((void **)&tmp);
-	tmp = ft_strjoin(padding, print);
-	return (ft_free((void **)&padding), ft_free((void **)&print), tmp);
+	return (result);
 }
 
-char	*set_padding(char *print, char *flags, t_printer printer)
+int	set_padding(char *print, char *flags, t_printer printer, char **formatted)
 {
 	char	*padding;
-	char	*tmp;
+	int		size;
 
 	padding = get_padding(flags, print, printer);
 	if (padding)
 	{
-		if (padding[0] == '0')
-		{
-			if (print[0] == '-')
-				return (set_padding_negative(padding, print));
-		}
-		if (ft_strchr(flags, '-'))
-			tmp = ft_strjoin(print, padding);
+		if (padding[0] == '0' && print[0] == '-')
+			*formatted = set_padding_negative(padding, print);
+		else if (ft_strchr(flags, '-'))
+			*formatted = ft_strjoin(print, padding);
 		else
-			tmp = ft_strjoin(padding, print);
-		return (ft_free((void **)&padding), ft_free((void **)&print), tmp);
+			*formatted = ft_strjoin(padding, print);
+		if (printer.c == 'c' && print[0] == '\0')
+			size = ft_strlen(*formatted) + 1;
+		else
+			size = ft_strlen(*formatted);
+		return (ft_free((void **)&padding), ft_free((void **)&print), size);
 	}
-	return (NULL);
+	*formatted = print;
+	if (printer.c == 'c' && print[0] == '\0')
+		size = ft_strlen(*formatted) + 1;
+	else
+		size = ft_strlen(*formatted);
+	return (size);
 }

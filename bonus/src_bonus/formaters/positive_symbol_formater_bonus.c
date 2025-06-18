@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:16:28 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/08 21:34:43 by pablo            ###   ########.fr       */
+/*   Updated: 2025/06/18 20:03:51 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*set_positive_symbol_format(char *print, char *flags, t_printer printer)
 {
 	char	*joined;
 
-	if (!(printer.c == 'd' || printer.c == 'i' || printer.c == 'p')
+	if ((printer.c != 'd' && printer.c != 'i' && printer.c != 'p')
 		|| !ft_strchr(flags, '+') || print[0] == '-' || print[0] == '+')
 		return (print);
 	joined = ft_strjoin("+", print);

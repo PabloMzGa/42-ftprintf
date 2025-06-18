@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:18 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/13 12:48:21 by pabmart2         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:19:45 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,16 @@ static char	*extract_flags(char const *str)
 
 static int	call_printer(char **str, va_list args)
 {
-	char	*formated;
 	char	*flags;
-	int		formated_len;
+	int		size;
 	int		flags_size;
 
 	flags = extract_flags(*str);
 	flags_size = ft_strlen(flags);
-	formated = parser(flags, flags_size, args);
-	ft_putstr_fd(formated, STDOUT_FILENO);
+	size = parser(flags, flags_size, args);
 	*str += flags_size;
-	formated_len = ft_strlen(formated);
-	if (*formated == '\0' && ft_strchr(flags, 'c'))
-		formated_len = 1;
-	ft_free((void **)&formated);
 	ft_free((void **)&flags);
-	return (formated_len);
+	return (size);
 }
 
 int	ft_printf(char const *str, ...)

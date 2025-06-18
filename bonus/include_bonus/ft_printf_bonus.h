@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:26:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/13 12:37:53 by pabmart2         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:22:34 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int					ft_printf(char const *str,
 
 t_printer			check_printer(const char c);
 
-char				*parser(char *flags, int flags_size, va_list args);
+int				parser(char *flags, int flags_size, va_list args);
 
 /****************************** PRINTERS **************************************/
 
@@ -437,7 +437,8 @@ char				*ft_uitob(unsigned int nbr, char *base);
 
 /****************************** FORMATERS *************************************/
 
-char				*set_padding(char *print, char *flags, t_printer printer);
+int					set_padding(char *print, char *flags, t_printer printer,
+						char **formatted);
 char				*get_space_padding(char *digit_pos);
 char				*get_zero_padding(char *print, char *zero_pos);
 

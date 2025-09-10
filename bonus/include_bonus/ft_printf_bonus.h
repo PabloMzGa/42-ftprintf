@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:26:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/18 19:22:34 by pablo            ###   ########.fr       */
+/*   Updated: 2025/09/10 21:09:15 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ typedef struct s_printers
 }					t_printer;
 
 /**
+ * @brief Searches for a printer function associated with the given character.
+ *
+ * Iterates through the global printer list `g_print_list` to find an entry
+ * whose character matches the input `c`. If found, returns the corresponding
+ * `t_printer` structure. If not found, returns the entry at the end of the
+ * list, wich is expected to be a default or sentinel value.
+ *
+ * @param c The format specifier character to search for.
+ *
+ * @return The `t_printer` structure associated with the character, or a default
+ *         value if not found.
+ */
+t_printer			check_printer(const char c);
+
+/**
  * @file ft_printf.c
  * @brief Custom implementation of the printf function.
  *
@@ -72,9 +87,20 @@ typedef struct s_printers
 int					ft_printf(char const *str,
 						...) __attribute__((format(printf, 1, 2)));
 
-t_printer			check_printer(const char c);
-
-int				parser(char *flags, int flags_size, va_list args);
+/**
+ * @brief Parses format flags and arguments, formats output, and prints it.
+ *
+ * Processes the format flags and arguments, finds the printer function,
+ * formats the output, and prints it to STDOUT. Handles '%' and applies
+ * padding if needed.
+ *
+ * @param flags      Format flags string.
+ * @param flags_size Size of flags string.
+ * @param args       Variable argument list.
+ *
+ * @return Number of characters printed, or 0 if no printer found.
+ */
+int					parser(char *flags, int flags_size, va_list args);
 
 /****************************** PRINTERS **************************************/
 
@@ -437,17 +463,141 @@ char				*ft_uitob(unsigned int nbr, char *base);
 
 /****************************** FORMATERS *************************************/
 
-int					set_padding(char *print, char *flags, t_printer printer,
-						char **formatted);
-char				*get_space_padding(char *digit_pos);
-char				*get_zero_padding(char *print, char *zero_pos);
-
-char				*set_precission(char *print, char *flags,
-						t_printer printer);
+/**
+ * @brief Adds alternate format prefix to hexadecimal strings.
+ *
+ * Checks if the alternate format flag ('#') is present in the format flags,
+ * and if the conversion character is 'x' or 'X'. If so, and the string does
+ * not represent zero or is not empty, prepends "0x" or "0X" to the string.
+ * The original string is freed after joining.
+ *
+ * @param print   The string to be formatted (usually a number in string form).
+ * @param flags   The format flags string (should contain '#' for alternate
+ *                form).
+ * @param printer Structure with formatting info, especially the conversion
+ *                char.
+ * @return        The newly formatted string with the prefix if needed,
+ *                the original string if alternate formatting is not required,
+ *                or NULL in case of error.
+ */
 char				*set_alternate_format(char *print, char *flags,
 						t_printer printer);
+
+/**
+ * @brief Sets padding for a formatted string according to flags and printer.
+ *
+ * Applies padding to `print` based on formatting flags and printer settings.
+ * If the character is 'c', delegates to `set_c_padding`. Otherwise, computes
+ * padding with `get_padding` and applies it:
+ *
+ *   - If padding starts with '0' and string is negative, uses
+ *     `set_padding_negative`.
+ *
+ *   - If left-align flag ('-') is present, adds padding to the right.
+ *
+ *   - Otherwise, adds padding to the left.
+ *
+ * Frees allocated memory for padding and original string as needed.
+ *
+ * @param print      String to be padded and formatted.
+ * @param flags      Formatting flags (e.g., '0', '-', etc.).
+ * @param printer    Printer config struct, includes conversion character.
+ * @param formatted  Pointer to resulting formatted string (output param).
+ *
+ * @return Length of the formatted string.
+ */
+int					set_padding(char *print, char *flags, t_printer printer,
+						char **formatted);
+
+/**
+ * @brief Adds a leading space for positive numbers.
+ *
+ * Checks if the format char is 'd', 'i', or 'p', and if the space flag
+ * (' ') is present in flags. If the string does not start with '-' or '+',
+ * prepends a space. Frees the original string after joining.
+ *
+ * @param print The formatted string to modify.
+ * @param flags The flags string with formatting options.
+ * @param printer The struct with the format character.
+ *
+ * @return The string with a leading space if needed, else the original.
+ */
 char				*set_positive_space_format(char *print, char *flags,
 						t_printer printer);
+
+/**
+ * @brief Adds a positive sign ('+') to the formatted output if required.
+ *
+ * This function checks if the conversion character in the printer struct is
+ * 'd', 'i', or 'p', and if the '+' flag is present in the flags string.
+ * If the output string does not already start with '-' or '+', a '+' is
+ * prepended to the output string. The original string is freed and the new
+ * string with the positive sign is returned.
+ *
+ * @param print   The formatted output string to potentially modify.
+ * @param flags   The string containing formatting flags.
+ * @param printer The printer struct containing conversion character
+ *                information.
+ *
+ * @return The modified output string with a positive sign if applicable,
+ *         otherwise the original string.
+ */
 char				*set_positive_symbol_format(char *print, char *flags,
 						t_printer printer);
+
+/**
+ * Sets the precision of the formatted output based on flags and printer type.
+ *
+ * If a precision specifier ('.') is found in flags:
+ *   - For numeric types ('d', 'i', 'u', 'x', 'X'), applies numeric precision
+ *     using set_num_precission().
+ *   - For string type ('s'), applies string precision using
+ *     set_string_precission().
+ * If no precision specifier is found, or the type does not match, returns the
+ * original print string.
+ *
+ * @param print   The string to be formatted.
+ * @param flags   The formatting flags, possibly containing a precision
+ *                specifier.
+ * @param printer The printer struct containing the conversion type character.
+ *
+ * @return        A newly allocated string with the applied precision, or the
+ *                original string if no changes are made.
+ */
+char				*set_precission(char *print, char *flags,
+						t_printer printer);
+
+/************************* FORMATERS  HELPERS *********************************/
+
+/**
+ * Creates a padding string of a specified character to align formatted output.
+ *
+ * @param print     The string to be printed, used to determine the required
+ *                  padding length.
+ * @param digit_pos Pointer to the position in the format string where the width
+ *                  specification starts.
+ * @param padding_c The character to use for padding (e.g., ' ' or '0').
+ * @param printer   Structure containing formatting info, including the
+ *                  conversion specifier.
+ *
+ * @return          A newly allocated string containing the padding characters,
+ *                  or an empty string if no padding is needed. Returns NULL if
+ *                  memory allocation fails.
+ *
+ * @note            The caller is responsible for freeing the returned string.
+ */
+char				*create_padding(char *print, char *digit_pos,
+						char padding_c, t_printer printer);
+
+/**
+ * @brief Finds the first digit in the flags string.
+ *
+ * Iterates through `flags` and returns a pointer to the first digit
+ * character (0-9). Returns NULL if no digit is found.
+ *
+ * @param flags Pointer to a null-terminated string of flag characters.
+ * @return Pointer to the first digit, or NULL if not found.
+ */
+char				*search_first_digit(char *flags);
+
 #endif

@@ -3,18 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:18 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/18 19:19:45 by pablo            ###   ########.fr       */
+/*   Updated: 2025/09/10 21:11:04 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
+/*
+ * g_valid_end_flags is a static constant array containing the valid conversion
+ * specifier characters for the custom printf implementation. These specifiers
+ * include:
+ *   - 'c': character
+ *   - 's': string
+ *   - 'p': pointer
+ *   - 'd': signed decimal integer
+ *   - 'i': signed decimal integer
+ *   - 'u': unsigned decimal integer
+ *   - 'x': unsigned hexadecimal integer (lowercase)
+ *   - 'X': unsigned hexadecimal integer (uppercase)
+ * The array is null-terminated for easy iteration.
+ */
 static const char	g_valid_end_flags[] = {'c', 's', 'p', 'd', 'i', 'u', 'x',
-		'X', 0};
+	'X', 0};
 
+/**
+ * @brief Checks if the given character is a valid flag.
+ *
+ * This function iterates through the global string `g_valid_end_flags`
+ * and compares each character with the provided `flag`. If a match is found,
+ * it returns 1 (true), otherwise it returns 0 (false).
+ *
+ * @param flag The character to check for validity as a flag.
+ *
+ * @return 1 if the character is a valid flag, 0 otherwise.
+ */
 static char	is_valid_flag(char flag)
 {
 	int	size;
@@ -29,6 +54,20 @@ static char	is_valid_flag(char flag)
 	return (0);
 }
 
+/**
+ * @brief Finds the end of the flags section in a format string.
+ *
+ * This function scans the input string `str` to locate the position where
+ * a valid flag character appears, as determined by the `is_valid_flag`
+ * function. If the first character is a '%' symbol, it returns the current
+ * position. Otherwise, it advances the pointer until a valid flag is found or
+ * the end of the string is reached.
+ *
+ * @param str Pointer to the format string to be scanned.
+ *
+ * @return Pointer to the position in the string where a valid flag is found,
+ *         or the '%' character if it is the first character.
+ */
 static char	*get_flags_end(char *str)
 {
 	if (*str == '%')
@@ -38,6 +77,17 @@ static char	*get_flags_end(char *str)
 	return (str);
 }
 
+/**
+ * @brief Extracts the flags substring from a format string.
+ *
+ * This function locates the end of the flags section in the given format string
+ * using get_flags_end(), allocates memory for the flags substring, and copies
+ * the flags characters into a newly allocated string.
+ *
+ * @param str The format string to extract flags from.
+ * @return A newly allocated string containing the flags, or NULL on
+ *         allocation failure.
+ */
 static char	*extract_flags(char const *str)
 {
 	char	*flags;
@@ -59,6 +109,18 @@ static char	*extract_flags(char const *str)
 	return (flags);
 }
 
+/**
+ * @brief Calls the printer after extracting and parsing format flags.
+ *
+ * Extracts formatting flags from the format string pointed to by `str`,
+ * parses them, and calls the appropriate printer using the variable
+ * argument list `args`. Advances the format string pointer past the
+ * parsed flags and frees any allocated memory for the flags.
+ *
+ * @param str Pointer to the format string pointer. Advanced past flags.
+ * @param args Variable argument list for the printer function.
+ * @return Number of characters printed by the printer function.
+ */
 static int	call_printer(char **str, va_list args)
 {
 	char	*flags;

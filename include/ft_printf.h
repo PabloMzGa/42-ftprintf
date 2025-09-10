@@ -6,7 +6,7 @@
 /*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 18:26:58 by pabmart2          #+#    #+#             */
-/*   Updated: 2025/06/13 13:20:38 by pabmart2         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:39:44 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void			*ft_calloc(size_t nmemb, size_t size);
  *       to this function was allocated dynamically (e.g., using malloc, calloc,
  *       or realloc).
  */
-void				ft_free(void **ptr);
+void			ft_free(void **ptr);
 
 /**
  * @brief Converts an integer to a null-terminated string.
@@ -249,7 +249,7 @@ char			*ft_itoa(int n);
  * @param n Number of bytes to be set to the value.
  * @return Pointer to the memory area s.
  */
-void				*ft_memset(void *s, int c, size_t n);
+void			*ft_memset(void *s, int c, size_t n);
 
 /**
  * @brief Writes a character to the specified file descriptor.

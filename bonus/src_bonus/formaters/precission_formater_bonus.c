@@ -3,16 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   precission_formater_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 17:11:33 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/08 21:12:38 by pablo            ###   ########.fr       */
+/*   Updated: 2025/09/10 21:05:04 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-char	*get_zeroes(char *print, char *n_pos)
+/**
+ * @brief Generates a string of zero characters for numeric formatting.
+ *
+ * Calculates the number of leading zeroes needed to pad the number in
+ * print to reach the desired length specified by n_pos. Handles sign
+ * characters ('-' or '+') by adjusting the zero count. If the number
+ * is zero and the precision is zero, returns NULL. If no zeroes are
+ * needed, returns an empty string.
+ *
+ * @param print The string representation of the number to be formatted.
+ * @param n_pos The string representation of the desired total length
+ *              (precision).
+ *
+ * @return A newly allocated string containing the required number of
+ *         zeroes, or NULL on allocation failure or if both number and
+ *         precision are zero.
+ */
+static char	*get_zeroes(char *print, char *n_pos)
 {
 	int		n_zeroes;
 	int		i;
@@ -40,7 +57,19 @@ char	*get_zeroes(char *print, char *n_pos)
 	return (zeroes);
 }
 
-char	*set_precission_negative(char *zeroes, char *print)
+/**
+ * @brief Formats a negative number string with leading zeroes and a minus sign.
+ *
+ * Pads a negative number string with zeroes and a minus sign.
+ * Removes the minus sign from the number, prepends it to the zeroes,
+ * and concatenates with the number. Frees intermediate strings.
+ *
+ * @param zeroes Zeroes to pad the number.
+ * @param print  Negative number string (starts with '-').
+ *
+ * @return       Newly allocated string "-<zeroes><number>", or NULL on error.
+ */
+static char	*set_precission_negative(char *zeroes, char *print)
 {
 	char	*tmp;
 
@@ -54,7 +83,22 @@ char	*set_precission_negative(char *zeroes, char *print)
 	return (ft_free((void **)&zeroes), ft_free((void **)&print), tmp);
 }
 
-char	*set_num_precission(char *print, char *dot_pos)
+/**
+ * @brief Sets numeric precision for a formatted string based on the
+ * precision specifier.
+ *
+ * Adjusts the numeric string `print` according to the precision at
+ * `dot_pos`. Prepends zeroes if needed to meet precision. Handles
+ * negative numbers and sign.
+ *
+ * @param print    String representation of the number to format. May be
+ *                 freed inside the function.
+ * @param dot_pos  Pointer to the '.' in the format string.
+ *
+ * @return         Newly allocated string with precision applied, or
+ *                 empty string on allocation failure.
+ */
+static char	*set_num_precission(char *print, char *dot_pos)
 {
 	char	*zeroes;
 	char	*tmp;
@@ -73,7 +117,21 @@ char	*set_num_precission(char *print, char *dot_pos)
 	return (tmp);
 }
 
-char	*set_string_precission(char *print, char *dot_pos)
+/**
+ * @brief Truncates a string to a specified max length based on precision.
+ *
+ * This function takes a string and a pointer to the '.' in a format string.
+ * It parses the precision value after the dot, and truncates the input string
+ * to at most that many characters. If precision is zero, it frees the input
+ * string and returns an empty string.
+ *
+ * @param print   The input string to be truncated. Freed inside the function.
+ * @param dot_pos Pointer to the '.' in the format string; precision is read
+ *                here.
+ * @return A newly allocated string truncated to the precision, or empty if z
+ *         ero.
+ */
+static char	*set_string_precission(char *print, char *dot_pos)
 {
 	int		print_len;
 	int		max_len;

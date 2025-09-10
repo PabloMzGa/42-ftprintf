@@ -6,7 +6,7 @@
 #    By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 14:34:30 by pabmart2          #+#    #+#              #
-#    Updated: 2025/06/18 12:05:06 by pabmart2         ###   ########.fr        #
+#    Updated: 2025/09/10 19:33:20 by pabmart2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -119,6 +119,7 @@ BONUS_SRC = \
 	bonus/src_bonus/libft/ft_uitob_bonus.c \
 	bonus/src_bonus/formaters/alternate_format_formatter_bonus.c \
 	bonus/src_bonus/formaters/padding_formatter_bonus.c \
+	bonus/src_bonus/formaters/padding_formatter_helpers_bonus.c \
 	bonus/src_bonus/formaters/positive_space_formater_bonus.c \
 	bonus/src_bonus/formaters/positive_symbol_formater_bonus.c \
 	bonus/src_bonus/formaters/precission_formater_bonus.c \

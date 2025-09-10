@@ -3,11 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/include",
-                "${workspaceFolder}/lib/libft/include",
-                "${workspaceFolder}/lib/libft/include/ft_get_next_line",
-                "${workspaceFolder}/bonus/include_bonus",
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/bonus/include_bonus",
                 "/usr/include",
                 "/usr/local/include"
             ],

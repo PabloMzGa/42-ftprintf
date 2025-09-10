@@ -3,57 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   padding_formatter_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pabmart2 <pabmart2@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 15:31:56 by pablo             #+#    #+#             */
-/*   Updated: 2025/06/18 20:00:55 by pablo            ###   ########.fr       */
+/*   Updated: 2025/09/10 20:55:54 by pabmart2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-static char	*search_first_digit(char *flags)
-{
-	while (*flags)
-	{
-		if (ft_isdigit(*flags))
-			return (flags);
-		++flags;
-	}
-	return (NULL);
-}
-
-char	*create_padding(char *print, char *digit_pos, char padding_c,
-		t_printer printer)
-{
-	char	*padding;
-	int		n_padding;
-	int		i;
-	int		width;
-	int		print_size;
-
-	while (*digit_pos && (*digit_pos == '0' || !ft_isdigit(*digit_pos)))
-		++digit_pos;
-	width = ft_atoi(digit_pos);
-	print_size = ft_strlen(print);
-	if (print_size == 0 && printer.c == 'c')
-		print_size = 1;
-	n_padding = width - print_size;
-	if (n_padding <= 0)
-		return (ft_strdup(""));
-	padding = malloc(sizeof(char) * n_padding + 1);
-	if (!padding)
-		return (NULL);
-	i = 0;
-	while (i < n_padding)
-	{
-		padding[i] = padding_c;
-		++i;
-	}
-	padding[n_padding] = '\0';
-	return (padding);
-}
-
+/**
+ * @brief Determines and creates the appropriate padding string for output.
+ *
+ * Analyzes flags and conversion char to decide whether to pad with zeros ('0')
+ * or spaces (' '). Avoids zero-padding for 'c', 's', '%', and when '-' or '.'
+ * flags are present.
+ *
+ * @param flags   String with formatting flags ('0', '-', '.', etc.).
+ * @param print   String to be printed, used for padding length.
+ * @param printer t_printer struct with formatting info, including conversion
+ *                char.
+ *
+ * @return Newly allocated padding string, or NULL if no padding is needed.
+ */
 static char	*get_padding(char *flags, char *print, t_printer printer)
 {
 	char	*digits_pos;
@@ -70,7 +42,18 @@ static char	*get_padding(char *flags, char *print, t_printer printer)
 		return (NULL);
 }
 
-char	*set_padding_negative(char *padding, char *print)
+/**
+ * Sets padding for a negative number by prepending a minus sign to the
+ * padding, then appending the rest of the number (excluding the original
+ * minus sign).
+ *
+ * @param padding  String containing the padding to be applied.
+ * @param print    String representation of the number, starting with '-'.
+ *
+ * @return         Newly allocated string with minus sign, padding, and
+ *                 number (without its original minus sign).
+ */
+static char	*set_padding_negative(char *padding, char *print)
 {
 	char	*tmp;
 	char	*result;
@@ -81,11 +64,52 @@ char	*set_padding_negative(char *padding, char *print)
 	return (result);
 }
 
+/**
+ * @brief Sets padding for a character according to formatting flags.
+ *
+ * Handles padding logic for printing a single character with optional
+ * left or right alignment, based on flags. Generates padding, prints
+ * character and padding in correct order, frees both padding and print,
+ * and returns total printed size.
+ *
+ * @param print      Pointer to string with character to print (freed).
+ * @param flags      Pointer to string with formatting flags (e.g., '-').
+ * @param printer    Structure with printer configuration.
+ * @param formatted  Pointer to string pointer for formatted result
+ *                   (set to NULL).
+ *
+ * @return Total number of characters printed (character + padding).
+ */
+static int	set_c_padding(char *print, char *flags, t_printer printer,
+		char **formatted)
+{
+	char	*padding;
+	int		size;
+
+	*formatted = NULL;
+	padding = get_padding(flags, print, printer);
+	if (ft_strchr(flags, '-'))
+	{
+		ft_putchar_fd(print[0], 1);
+		ft_putstr_fd(padding, 1);
+	}
+	else
+	{
+		ft_putstr_fd(padding, 1);
+		ft_putchar_fd(print[0], 1);
+	}
+	size = ft_strlen(padding) + 1;
+	ft_free((void **)&padding);
+	return (ft_free((void **)&print), size);
+}
+
 int	set_padding(char *print, char *flags, t_printer printer, char **formatted)
 {
 	char	*padding;
 	int		size;
 
+	if (printer.c == 'c')
+		return (set_c_padding(print, flags, printer, formatted));
 	padding = get_padding(flags, print, printer);
 	if (padding)
 	{
@@ -95,16 +119,10 @@ int	set_padding(char *print, char *flags, t_printer printer, char **formatted)
 			*formatted = ft_strjoin(print, padding);
 		else
 			*formatted = ft_strjoin(padding, print);
-		if (printer.c == 'c' && print[0] == '\0')
-			size = ft_strlen(*formatted) + 1;
-		else
-			size = ft_strlen(*formatted);
+		size = ft_strlen(*formatted);
 		return (ft_free((void **)&padding), ft_free((void **)&print), size);
 	}
 	*formatted = print;
-	if (printer.c == 'c' && print[0] == '\0')
-		size = ft_strlen(*formatted) + 1;
-	else
-		size = ft_strlen(*formatted);
+	size = ft_strlen(*formatted);
 	return (size);
 }
